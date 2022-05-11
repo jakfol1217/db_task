@@ -1,0 +1,94 @@
+--rooms
+insert into rooms(no_seats, imax) values (20, 0);
+insert into rooms(no_seats, imax) values (20, 1);
+insert into rooms(no_seats, imax) values (25, 1);
+
+--movies
+insert into movies(title, director_name, director_last_name, running_time) values ('Nomadland', 'Chloe', 'Zhao', 108);
+insert into movies(title, director_name, director_last_name, running_time) values ('The Father', 'Florian', 'Zeller', 97);
+insert into movies(title, director_name, director_last_name, running_time) values ('CODA', 'Sian', 'Heder', 111);
+insert into movies(title, director_name, director_last_name, running_time) values ('1917', 'Sam', 'Mendes', 119);
+    
+--screenings
+insert into screenings(room_id, movie_id, start_time, end_time, free_seats) values (1,2,
+to_date('11-04-2022 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),
+to_date('11-04-2022 16:37:00', 'DD-MM-YYYY HH24:MI:SS') + interval '97' minute, 19);
+insert into screenings(room_id, movie_id, start_time, end_time, free_seats) values (2,2,
+to_date('23-02-2022 18:30:34', 'DD-MM-YYYY HH24:MI:SS'),
+to_date('23-02-2022 18:30:34', 'DD-MM-YYYY HH24:MI:SS') + interval '97' minute, 19);
+insert into screenings(room_id, movie_id, start_time, end_time, free_seats) values (2,3,
+to_date('12-03-2022 10:58:27', 'DD-MM-YYYY HH24:MI:SS'),
+to_date('12-03-2022 10:58:27', 'DD-MM-YYYY HH24:MI:SS') + interval '111' minute, 18);
+insert into screenings(room_id, movie_id, start_time, end_time, free_seats) values (1,2,
+to_date('03-05-2022 16:31:10', 'DD-MM-YYYY HH24:MI:SS'),
+to_date('03-05-2022 16:31:10', 'DD-MM-YYYY HH24:MI:SS') + interval '97' minute, 17);
+insert into screenings(room_id, movie_id, start_time, end_time, free_seats) values (1,1,
+to_date('14-04-2022 08:26:15', 'DD-MM-YYYY HH24:MI:SS'),
+to_date('14-04-2022 08:26:15', 'DD-MM-YYYY HH24:MI:SS') + interval '108' minute, 18);
+insert into screenings(room_id, movie_id, start_time, end_time, free_seats) values (1,2,
+to_date('16-04-2022 10:55:53', 'DD-MM-YYYY HH24:MI:SS'),
+to_date('16-04-2022 10:55:53', 'DD-MM-YYYY HH24:MI:SS') + interval '97' minute, 19);
+insert into screenings(room_id, movie_id, start_time, end_time, free_seats) values (3,4,
+to_date('24-01-2022 19:14:10', 'DD-MM-YYYY HH24:MI:SS'),
+to_date('24-01-2022 19:14:10', 'DD-MM-YYYY HH24:MI:SS') + interval '119' minute, 23);
+insert into screenings(room_id, movie_id, start_time, end_time, free_seats) values (3,2,
+to_date('22-02-2022 08:45:54', 'DD-MM-YYYY HH24:MI:SS'),
+to_date('22-02-2022 08:45:54', 'DD-MM-YYYY HH24:MI:SS') + interval '97' minute, 23);
+insert into screenings(room_id, movie_id, start_time, end_time, free_seats) values (3,3,
+to_date('07-04-2022 15:45:43', 'DD-MM-YYYY HH24:MI:SS'),
+to_date('07-04-2022 15:45:43', 'DD-MM-YYYY HH24:MI:SS') + interval '111' minute, 24);
+insert into screenings(room_id, movie_id, start_time, end_time, free_seats) values (2,4,
+to_date('06-04-2022 11:45:19', 'DD-MM-YYYY HH24:MI:SS'),
+to_date('06-04-2022 11:45:19', 'DD-MM-YYYY HH24:MI:SS') + interval '119' minute, 19);
+insert into screenings(room_id, movie_id, start_time, end_time, free_seats) values (1,4,
+to_date('06-07-2022 11:45:19', 'DD-MM-YYYY HH24:MI:SS'),
+to_date('06-07-2022 11:45:19', 'DD-MM-YYYY HH24:MI:SS') + interval '119' minute, 20);
+
+--seats (uruchamiane manualnie)
+begin
+    for i in 1..20
+    loop
+        insert into seats(seat_number, room_id) values (i, 1);
+    end loop;
+end;
+
+begin
+    for i in 1..20
+    loop
+        insert into seats(seat_number, room_id) values (i, 2);
+    end loop;
+end;
+
+begin
+    for i in 1..25
+    loop
+        insert into seats(seat_number, room_id) values (i, 3);
+    end loop;
+end;
+
+--tickets
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (1, (select room_id from screenings where screening_id=1), 2, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'), (select end_time from screenings where screening_id=1));
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (7, (select room_id from screenings where screening_id=7), 6, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'), (select end_time from screenings where screening_id=7));
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (4, (select room_id from screenings where screening_id=4), 16, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),(select end_time from screenings where screening_id=4));
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (3, (select room_id from screenings where screening_id=3), 17, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),(select end_time from screenings where screening_id=3));
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (4, (select room_id from screenings where screening_id=4), 13, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),(select end_time from screenings where screening_id=4));
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (2, (select room_id from screenings where screening_id=2), 19, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),(select end_time from screenings where screening_id=2));
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (9, (select room_id from screenings where screening_id=9), 11, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),(select end_time from screenings where screening_id=9));
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (8, (select room_id from screenings where screening_id=8), 5, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),(select end_time from screenings where screening_id=8));
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (6, (select room_id from screenings where screening_id=6), 7, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),(select end_time from screenings where screening_id=6));
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (7, (select room_id from screenings where screening_id=7), 3, 20, 1, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),(select end_time from screenings where screening_id=7));   
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (5, (select room_id from screenings where screening_id=5), 6, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),(select end_time from screenings where screening_id=5));
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (5, (select room_id from screenings where screening_id=5), 13, 35, 0, 0, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'), to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS') + interval '119' minute);
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (5, (select room_id from screenings where screening_id=5), 13, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),(select end_time from screenings where screening_id=5));
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (3, (select room_id from screenings where screening_id=3), 1, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),(select end_time from screenings where screening_id=3));
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (3, (select room_id from screenings where screening_id=3), 12, 35, 0, 0, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'), to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS') + interval '119' minute);
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (3, (select room_id from screenings where screening_id=3), 20, 20, 1, 0, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'), to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS') + interval '119' minute);
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (3, (select room_id from screenings where screening_id=3), 12, 35, 0, 0, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'), to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS') + interval '119' minute);
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (4, (select room_id from screenings where screening_id=4), 12, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),(select end_time from screenings where screening_id=4));
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (8, (select room_id from screenings where screening_id=8), 8, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),(select end_time from screenings where screening_id=8));
+insert into tickets(screening_id, room_id, seat_number, price, reduced, paid, valid_from, valid_to) values (10, (select room_id from screenings where screening_id=10), 12, 35, 0, 1, to_date('11-04-2021 16:37:00', 'DD-MM-YYYY HH24:MI:SS'),(select end_time from screenings where screening_id=10));
+    
+
+    
+    
+
